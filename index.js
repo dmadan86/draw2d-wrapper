@@ -1,5 +1,5 @@
 window.$ = require('jquery');
-require('./draw2d/shifty');
+window.Tweenable = require('./draw2d/shifty');
 // require('./draw2d/patched_raphael');
 window.Raphael = require('raphael');
 require('./draw2d/patched_Class');
@@ -1196,3 +1196,4 @@ var jsonDocument = [{
 
 // var draw2d = require('./lib/draw2d/index');
 //
+0

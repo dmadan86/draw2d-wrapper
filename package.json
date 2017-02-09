@@ -1,8 +1,8 @@
 {
   "name": "draw2d-wrapper",
-  "version": "1.0.3",
-  "description": "Wrapper for draw2 lib, typescript definition",
-  "main": "dist/draw2d-wrapper.js",
+  "version": "1.0.4",
+  "description": "Wrapper for draw2 lib",
+  "main": "index.js",
   "scripts": {
     "dev": "NODE_ENV=development webpack-dev-server  --progress --port 8090",
     "build": "rm -rf dist/* && NODE_ENV=production webpack -p --colors",

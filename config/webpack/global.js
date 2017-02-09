@@ -13,7 +13,7 @@ var HtmlPlugin = require('html-webpack-plugin');
 module.exports = function(_path) {
   // define local variables
   var dependencies = Object.keys(require(_path + '/package').dependencies);
-  var rootAssetPath = _path + 'app';
+  var rootAssetPath = _path + 'examples';
   // return objecy
   return {
     // entry points
@@ -81,25 +81,25 @@ module.exports = function(_path) {
         jQuery: "jquery",
         "window.jQuery": "jquery"
       }),
-    //   new webpack.ProvidePlugin({
-    //     PF: "pathfinding",
-    //     "window.pathfinding": "pathfinding"
-    //   }),
-    //   new webpack.ProvidePlugin({
-    //     Raphael: "raphael",
-    //     "window.Raphael": "raphael"
-    //   }),
-    //   new webpack.ProvidePlugin({
-    //     Tweenable: "shifty",
-    //     "window.Tweenable": "shifty"
-    //   }),
+      new webpack.ProvidePlugin({
+        PF: "pathfinding",
+        "window.pathfinding": "pathfinding"
+      }),
+      new webpack.ProvidePlugin({
+        Raphael: "raphael",
+        "window.Raphael": "raphael"
+      }),
+      new webpack.ProvidePlugin({
+        Tweenable: "shifty",
+        "window.Tweenable": "shifty"
+      }),
       new Manifest(path.join(_path + '/config', 'manifest.json'), {
         rootAssetPath: rootAssetPath,
         ignorePaths: ['.DS_Store']
       }),
       // create instance for entrypoint index.html building
       new HtmlPlugin({
-        title: 'Rambler Webpack Dev Boilerplate',
+        title: 'draw2d wrapper',
         chunks: ['application', 'vendors'],
         filename: 'index.html',
         template: path.join(_path,  'examples', 'templates', 'layouts', 'index.html')
