@@ -1,0 +1,1198 @@
+window.$ = require('jquery');
+require('./shifty');
+require('./patched_raphael');
+require('./patched_Class');
+require('./draw2d');
+require('./plugins/shapes');
+// (function() {
+var self = this;
+var View = draw2d.Canvas.extend({
+  init: function(id) {
+    this._super(id, 2000, 2000);
+    this.reader = new draw2d.io.json.Reader();
+    this.unmarshalTableShapeFigure = function(o) {
+      var name_cap = o.name.trim().split('\n');
+      if(name_cap.length > 1) {
+        o.name = name_cap[0].split(':')[0];
+        o.caption = name_cap[1];
+      }
+      var Props = "{name:'" + o.name.trim() + "', caption:'" + o.caption + "',bgColor:'" + o.bgColor.trim() + "', color:'" + o.color.trim() + "'";
+      for(var j = 0; j < o.ports.length; j++) Props += ",p" + (j + 1) + ":{id:'" + o.ports[j].id.trim() + "',name:'" + o.ports[j].name.trim() + "'}";
+      Props += "}";
+      var figure = eval("new " + o.type + "(" + Props + ");");
+      figure.id = o.id;
+      for(var j = 0; j < o.entities.length; j++) figure.addEntity(o.entities[j].text);
+      var command = new draw2d.command.CommandAdd(this, figure, o.x > 0 ? o.x : 0, o.y > 0 ? o.y : 0);
+      this.getCommandStack().execute(command);
+    };
+    this.zx_unmarshal = function(canvas, data) {
+      this.bUnmarshal = true;
+      if(data.length) {
+        for(var i = 0; i < data.length; i++) {
+          var obj = [];
+          obj[0] = data[i];
+          switch(obj[0].type) {
+            case "TableShape":
+              this.unmarshalTableShapeFigure(obj[0]);
+              break;
+            default:
+              canvas.reader.unmarshal(canvas, obj);
+          }
+        };
+        //LinkCtrlrScope.InitLinks();
+      }
+      this.bUnmarshal = false;
+    };
+
+    this.on("select", function () {
+        console.warn('select', arguments);
+    });
+  }
+});
+// setTimeout(function() {
+//   // var canvas = new draw2d.Canvas("gfx_holder");
+//   var canvas = new View('gfx_holder');
+//   var reader = new draw2d.io.json.Reader();
+//   canvas.zx_unmarshal(canvas, jsonDocument);
+// }, 1000);
+module.exports = function(opt) {
+  self.options = opt;
+  var canvas = new View(opt.elementId);
+  var reader = new draw2d.io.json.Reader();
+  canvas.zx_unmarshal(canvas, jsonDocument);
+};
+var jsonDocument = [{
+  "type": "TableShape",
+  "id": "3d1a2122-7350-69b7-0338-0e14222abb31",
+  "x": 128.703125,
+  "y": 834,
+  "width": 167.328125,
+  "height": 52.40625,
+  "alpha": 1,
+  "angle": 0,
+  "userData": {},
+  "cssClass": "TableShape",
+  "ports": [{
+    "type": "draw2d.InputPort",
+    "id": "e8163add-dd6c-60c4-caaf-fbc893330aea",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_InputPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "input_3d1a2122-7350-69b7-0338-0e14222abb31",
+    "port": "draw2d.InputPort",
+    "locator": "draw2d.layout.locator.InputPortLocator"
+  }, {
+    "type": "draw2d.OutputPort",
+    "id": "4375baf3-e884-9581-e54c-08168551f8dd",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_OutputPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "output_3d1a2122-7350-69b7-0338-0e14222abb31",
+    "port": "draw2d.OutputPort",
+    "locator": "draw2d.layout.locator.OutputPortLocator"
+  }, {
+    "type": "draw2d.HybridPort",
+    "id": "20d27b5c-598d-9553-e7e8-7508e9a1200d",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_HybridPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "hybrid0",
+    "port": "draw2d.HybridPort",
+    "locator": "draw2d.layout.locator.PortLocator"
+  }, {
+    "type": "draw2d.HybridPort",
+    "id": "52ef4a4a-8244-240f-7b7b-50666517ec0c",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_HybridPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "hybrid1",
+    "port": "draw2d.HybridPort",
+    "locator": "draw2d.layout.locator.PortLocator"
+  }],
+  "bgColor": "#304FFE",
+  "color": "#5856D6",
+  "stroke": 1,
+  "radius": 3,
+  "dasharray": null,
+  "gap": 0,
+  "name": "Тест 12 января",
+  "entities": []
+}, {
+  "type": "TableShape",
+  "id": "8cb33a66-eaf8-d4c3-13f8-39b4dbecb52e",
+  "x": 431.703125,
+  "y": 374,
+  "width": 94.328125,
+  "height": 52.390625,
+  "alpha": 1,
+  "angle": 0,
+  "userData": {},
+  "cssClass": "TableShape",
+  "ports": [{
+    "type": "draw2d.InputPort",
+    "id": "26076e7a-eef9-4e9e-dd40-fc5e95e10534",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_InputPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "input_8cb33a66-eaf8-d4c3-13f8-39b4dbecb52e",
+    "port": "draw2d.InputPort",
+    "locator": "draw2d.layout.locator.InputPortLocator"
+  }, {
+    "type": "draw2d.OutputPort",
+    "id": "471430d7-1063-e5f7-9205-489202cf74b3",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_OutputPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "output_8cb33a66-eaf8-d4c3-13f8-39b4dbecb52e",
+    "port": "draw2d.OutputPort",
+    "locator": "draw2d.layout.locator.OutputPortLocator"
+  }, {
+    "type": "draw2d.HybridPort",
+    "id": "9385c3f5-2abc-e260-8c5d-1a579bd7f814",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_HybridPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "hybrid0",
+    "port": "draw2d.HybridPort",
+    "locator": "draw2d.layout.locator.PortLocator"
+  }, {
+    "type": "draw2d.HybridPort",
+    "id": "881d096d-cec3-28dd-09c2-46729fee4989",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_HybridPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "hybrid1",
+    "port": "draw2d.HybridPort",
+    "locator": "draw2d.layout.locator.PortLocator"
+  }],
+  "bgColor": "#358035",
+  "color": "#5856D6",
+  "stroke": 1,
+  "radius": 3,
+  "dasharray": null,
+  "gap": 0,
+  "name": "Услуга",
+  "entities": []
+}, {
+  "type": "TableShape",
+  "id": "0c7d2f11-7c89-2591-9148-ef92dabf791e",
+  "x": 434.734375,
+  "y": 656,
+  "width": 106.59375,
+  "height": 52.390625,
+  "alpha": 1,
+  "angle": 0,
+  "userData": {},
+  "cssClass": "TableShape",
+  "ports": [{
+    "type": "draw2d.InputPort",
+    "id": "9ae1442c-f0f6-d9b2-4059-50709b7eb2dc",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_InputPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "input_0c7d2f11-7c89-2591-9148-ef92dabf791e",
+    "port": "draw2d.InputPort",
+    "locator": "draw2d.layout.locator.InputPortLocator"
+  }, {
+    "type": "draw2d.OutputPort",
+    "id": "e74c2a11-91c9-b5ff-e883-fec646f5192c",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_OutputPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "output_0c7d2f11-7c89-2591-9148-ef92dabf791e",
+    "port": "draw2d.OutputPort",
+    "locator": "draw2d.layout.locator.OutputPortLocator"
+  }, {
+    "type": "draw2d.HybridPort",
+    "id": "4d042ab1-b22a-be7e-f74a-444cd3d619e8",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_HybridPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "hybrid0",
+    "port": "draw2d.HybridPort",
+    "locator": "draw2d.layout.locator.PortLocator"
+  }, {
+    "type": "draw2d.HybridPort",
+    "id": "d6356281-4ad5-6676-6905-79dc9e4cd3ef",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_HybridPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "hybrid1",
+    "port": "draw2d.HybridPort",
+    "locator": "draw2d.layout.locator.PortLocator"
+  }],
+  "bgColor": "#304FFE",
+  "color": "#5856D6",
+  "stroke": 1,
+  "radius": 3,
+  "dasharray": null,
+  "gap": 0,
+  "name": "База данных",
+  "entities": []
+}, {
+  "type": "TableShape",
+  "id": "9372d172-88ec-f4be-412e-baad7bf7ad30",
+  "x": 169.734375,
+  "y": 656,
+  "width": 120.453125,
+  "height": 52.390625,
+  "alpha": 1,
+  "angle": 0,
+  "userData": {},
+  "cssClass": "TableShape",
+  "ports": [{
+    "type": "draw2d.InputPort",
+    "id": "a8d4ae94-1edb-924e-d503-c0ebf2b8b84e",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_InputPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "input_9372d172-88ec-f4be-412e-baad7bf7ad30",
+    "port": "draw2d.InputPort",
+    "locator": "draw2d.layout.locator.InputPortLocator"
+  }, {
+    "type": "draw2d.OutputPort",
+    "id": "521ffe4b-fc18-b079-a0fe-5e6541a4bffc",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_OutputPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "output_9372d172-88ec-f4be-412e-baad7bf7ad30",
+    "port": "draw2d.OutputPort",
+    "locator": "draw2d.layout.locator.OutputPortLocator"
+  }, {
+    "type": "draw2d.HybridPort",
+    "id": "f83e3029-91de-a7af-594e-f805a6ee6760",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_HybridPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "hybrid0",
+    "port": "draw2d.HybridPort",
+    "locator": "draw2d.layout.locator.PortLocator"
+  }, {
+    "type": "draw2d.HybridPort",
+    "id": "fab8dc52-bcab-8ebe-860c-cf15b66ec6e5",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_HybridPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "hybrid1",
+    "port": "draw2d.HybridPort",
+    "locator": "draw2d.layout.locator.PortLocator"
+  }],
+  "bgColor": "#304FFE",
+  "color": "#5856D6",
+  "stroke": 1,
+  "radius": 3,
+  "dasharray": null,
+  "gap": 0,
+  "name": "Учетная запись",
+  "entities": []
+}, {
+  "type": "TableShape",
+  "id": "ae4fb094-54c0-6a5f-0310-115d37eab578",
+  "x": 403.734375,
+  "y": 834,
+  "width": 168.59375,
+  "height": 52.390625,
+  "alpha": 1,
+  "angle": 0,
+  "userData": {},
+  "cssClass": "TableShape",
+  "ports": [{
+    "type": "draw2d.InputPort",
+    "id": "87112129-77eb-7b17-0787-a3e2d5957faa",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_InputPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "input_ae4fb094-54c0-6a5f-0310-115d37eab578",
+    "port": "draw2d.InputPort",
+    "locator": "draw2d.layout.locator.InputPortLocator"
+  }, {
+    "type": "draw2d.OutputPort",
+    "id": "47c21c6c-a5ec-66a9-d803-844b3c6832f6",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_OutputPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "output_ae4fb094-54c0-6a5f-0310-115d37eab578",
+    "port": "draw2d.OutputPort",
+    "locator": "draw2d.layout.locator.OutputPortLocator"
+  }, {
+    "type": "draw2d.HybridPort",
+    "id": "5199627d-c0b5-20a5-fea0-cd79fc9949cc",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_HybridPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "hybrid0",
+    "port": "draw2d.HybridPort",
+    "locator": "draw2d.layout.locator.PortLocator"
+  }, {
+    "type": "draw2d.HybridPort",
+    "id": "69e624b1-3c5e-f044-1271-4d6ca1041f25",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_HybridPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "hybrid1",
+    "port": "draw2d.HybridPort",
+    "locator": "draw2d.layout.locator.PortLocator"
+  }],
+  "bgColor": "#304FFE",
+  "color": "#5856D6",
+  "stroke": 1,
+  "radius": 3,
+  "dasharray": null,
+  "gap": 0,
+  "name": "Система виртуализации",
+  "entities": []
+}, {
+  "type": "TableShape",
+  "id": "9a49821b-0fad-bd45-56bf-af4d32c6026a",
+  "x": 454.734375,
+  "y": 1049,
+  "width": 174.0625,
+  "height": 66.796875,
+  "alpha": 1,
+  "angle": 0,
+  "userData": {},
+  "cssClass": "TableShape",
+  "ports": [{
+    "type": "draw2d.InputPort",
+    "id": "2fd986d0-1e61-1acb-7e4b-2f54dd3ef466",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_InputPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "input_9a49821b-0fad-bd45-56bf-af4d32c6026a",
+    "port": "draw2d.InputPort",
+    "locator": "draw2d.layout.locator.InputPortLocator"
+  }, {
+    "type": "draw2d.OutputPort",
+    "id": "cfe327c2-000b-dcce-d84c-ad570b8a1f7c",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_OutputPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "output_9a49821b-0fad-bd45-56bf-af4d32c6026a",
+    "port": "draw2d.OutputPort",
+    "locator": "draw2d.layout.locator.OutputPortLocator"
+  }, {
+    "type": "draw2d.HybridPort",
+    "id": "2a7a1dd9-3c21-d94d-1955-bfcd690f0544",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_HybridPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "hybrid0",
+    "port": "draw2d.HybridPort",
+    "locator": "draw2d.layout.locator.PortLocator"
+  }, {
+    "type": "draw2d.HybridPort",
+    "id": "d353c20f-9ab4-cd17-3e96-c5505de84fa0",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_HybridPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "hybrid1",
+    "port": "draw2d.HybridPort",
+    "locator": "draw2d.layout.locator.PortLocator"
+  }],
+  "bgColor": "#FF9100",
+  "color": "#5856D6",
+  "stroke": 1,
+  "radius": 3,
+  "dasharray": null,
+  "gap": 0,
+  "name": "Оборудование\n",
+  "entities": []
+}, {
+  "type": "TableShape",
+  "id": "9c22b74f-1aea-16c4-7dc6-be53396aa056",
+  "x": 535.734375,
+  "y": 490,
+  "width": 142.859375,
+  "height": 52.390625,
+  "alpha": 1,
+  "angle": 0,
+  "userData": {},
+  "cssClass": "TableShape",
+  "ports": [{
+    "type": "draw2d.InputPort",
+    "id": "f24263d5-5ae6-e2de-d5a6-be124bfa4a2a",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_InputPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "input_9c22b74f-1aea-16c4-7dc6-be53396aa056",
+    "port": "draw2d.InputPort",
+    "locator": "draw2d.layout.locator.InputPortLocator"
+  }, {
+    "type": "draw2d.OutputPort",
+    "id": "0aff3e45-89a5-8142-d2cf-3aa4b8231b3e",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_OutputPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "output_9c22b74f-1aea-16c4-7dc6-be53396aa056",
+    "port": "draw2d.OutputPort",
+    "locator": "draw2d.layout.locator.OutputPortLocator"
+  }, {
+    "type": "draw2d.HybridPort",
+    "id": "489c6995-cb3c-559b-6811-f9dddbf35946",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_HybridPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "hybrid0",
+    "port": "draw2d.HybridPort",
+    "locator": "draw2d.layout.locator.PortLocator"
+  }, {
+    "type": "draw2d.HybridPort",
+    "id": "95a6aea8-16e9-3876-48ef-d5374255616a",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_HybridPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "hybrid1",
+    "port": "draw2d.HybridPort",
+    "locator": "draw2d.layout.locator.PortLocator"
+  }],
+  "bgColor": "#358035",
+  "color": "#5856D6",
+  "stroke": 1,
+  "radius": 3,
+  "dasharray": null,
+  "gap": 0,
+  "name": "Компонент системы",
+  "entities": []
+}, {
+  "type": "TableShape",
+  "id": "d8053c5f-a764-e102-9be8-6e53bf80eb78",
+  "x": 282.734375,
+  "y": 490,
+  "width": 142.859375,
+  "height": 52.40625,
+  "alpha": 1,
+  "angle": 0,
+  "userData": {},
+  "cssClass": "TableShape",
+  "ports": [{
+    "type": "draw2d.InputPort",
+    "id": "3e67f302-8ff3-c2f2-aa31-074a667fc979",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_InputPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "input_d8053c5f-a764-e102-9be8-6e53bf80eb78",
+    "port": "draw2d.InputPort",
+    "locator": "draw2d.layout.locator.InputPortLocator"
+  }, {
+    "type": "draw2d.OutputPort",
+    "id": "a04d0093-6145-4d93-6cc0-43b20ee11409",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_OutputPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "output_d8053c5f-a764-e102-9be8-6e53bf80eb78",
+    "port": "draw2d.OutputPort",
+    "locator": "draw2d.layout.locator.OutputPortLocator"
+  }, {
+    "type": "draw2d.HybridPort",
+    "id": "a6009eea-264c-0fd7-7719-1d673ce4b5c6",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_HybridPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "hybrid0",
+    "port": "draw2d.HybridPort",
+    "locator": "draw2d.layout.locator.PortLocator"
+  }, {
+    "type": "draw2d.HybridPort",
+    "id": "358df20a-4d9b-6edd-ec0b-fbd257d1b1dc",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_HybridPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "hybrid1",
+    "port": "draw2d.HybridPort",
+    "locator": "draw2d.layout.locator.PortLocator"
+  }],
+  "bgColor": "#358035",
+  "color": "#5856D6",
+  "stroke": 1,
+  "radius": 3,
+  "dasharray": null,
+  "gap": 0,
+  "name": "Компонент системы",
+  "entities": []
+}, {
+  "type": "TableShape",
+  "id": "9aa135c3-de74-af26-8bde-26a14c6cfd4a",
+  "x": 134.734375,
+  "y": 1058,
+  "width": 101,
+  "height": 52.390625,
+  "alpha": 1,
+  "angle": 0,
+  "userData": {},
+  "cssClass": "TableShape",
+  "ports": [{
+    "type": "draw2d.InputPort",
+    "id": "5b2c6fb6-641b-42bd-fa9d-2a4ef79adad2",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_InputPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "input_9aa135c3-de74-af26-8bde-26a14c6cfd4a",
+    "port": "draw2d.InputPort",
+    "locator": "draw2d.layout.locator.InputPortLocator"
+  }, {
+    "type": "draw2d.OutputPort",
+    "id": "e23d6158-ba47-a33b-3b71-af6547c81c44",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_OutputPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "output_9aa135c3-de74-af26-8bde-26a14c6cfd4a",
+    "port": "draw2d.OutputPort",
+    "locator": "draw2d.layout.locator.OutputPortLocator"
+  }, {
+    "type": "draw2d.HybridPort",
+    "id": "30147535-bf3d-fc3f-9eed-49196c9c3c9a",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_HybridPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "hybrid0",
+    "port": "draw2d.HybridPort",
+    "locator": "draw2d.layout.locator.PortLocator"
+  }, {
+    "type": "draw2d.HybridPort",
+    "id": "d9544bd0-04d8-7e20-7a55-0f0d63e971e7",
+    "width": 10,
+    "height": 10,
+    "alpha": 1,
+    "angle": 0,
+    "userData": {},
+    "cssClass": "draw2d_HybridPort",
+    "bgColor": "#4F6870",
+    "color": "#1B1B1B",
+    "stroke": 1,
+    "dasharray": null,
+    "maxFanOut": 9007199254740991,
+    "name": "hybrid1",
+    "port": "draw2d.HybridPort",
+    "locator": "draw2d.layout.locator.PortLocator"
+  }],
+  "bgColor": "#FF9100",
+  "color": "#5856D6",
+  "stroke": 1,
+  "radius": 3,
+  "dasharray": null,
+  "gap": 0,
+  "name": "Монитор",
+  "entities": []
+}, {
+  "type": "draw2d.Connection",
+  "id": "88009172-5729-7a1a-08cd-7dd0e0e4f722",
+  "alpha": 1,
+  "angle": 0,
+  "userData": {},
+  "cssClass": "draw2d_Connection",
+  "stroke": 2,
+  "color": "#000000",
+  "outlineStroke": 0,
+  "outlineColor": "none",
+  "policy": "draw2d.policy.line.OrthogonalSelectionFeedbackPolicy",
+  "vertex": [{
+    "x": 478.8671875,
+    "y": 426.390625
+  }, {
+    "x": 478.8671875,
+    "y": 458.1953125
+  }, {
+    "x": 607.1640625,
+    "y": 458.1953125
+  }, {
+    "x": 607.1640625,
+    "y": 490
+  }],
+  "radius": 3,
+  "routingMetaData": {
+    "routedByUserInteraction": false,
+    "fromDir": 2,
+    "toDir": 0
+  },
+  "source": {
+    "node": "8cb33a66-eaf8-d4c3-13f8-39b4dbecb52e",
+    "port": "hybrid1",
+    "decoration": "draw2d.decoration.connection.DiamondDecorator"
+  },
+  "target": {
+    "node": "9c22b74f-1aea-16c4-7dc6-be53396aa056",
+    "port": "hybrid0"
+  }
+}, {
+  "type": "draw2d.Connection",
+  "id": "0a6b742a-2132-668c-0dfb-5f9bb079a453",
+  "alpha": 1,
+  "angle": 0,
+  "userData": {},
+  "cssClass": "draw2d_Connection",
+  "stroke": 2,
+  "color": "#000000",
+  "outlineStroke": 0,
+  "outlineColor": "none",
+  "policy": "draw2d.policy.line.OrthogonalSelectionFeedbackPolicy",
+  "vertex": [{
+    "x": 478.8671875,
+    "y": 426.390625
+  }, {
+    "x": 478.8671875,
+    "y": 458.1953125
+  }, {
+    "x": 354.1640625,
+    "y": 458.1953125
+  }, {
+    "x": 354.1640625,
+    "y": 490
+  }],
+  "radius": 3,
+  "routingMetaData": {
+    "routedByUserInteraction": false,
+    "fromDir": 2,
+    "toDir": 0
+  },
+  "source": {
+    "node": "8cb33a66-eaf8-d4c3-13f8-39b4dbecb52e",
+    "port": "hybrid1",
+    "decoration": "draw2d.decoration.connection.DiamondDecorator"
+  },
+  "target": {
+    "node": "d8053c5f-a764-e102-9be8-6e53bf80eb78",
+    "port": "hybrid0"
+  }
+}, {
+  "type": "draw2d.Connection",
+  "id": "0d4014d0-9e96-f1fe-9e55-f7b68035b6cf",
+  "alpha": 1,
+  "angle": 0,
+  "userData": {},
+  "cssClass": "draw2d_Connection",
+  "stroke": 2,
+  "color": "#304FFE",
+  "outlineStroke": 0,
+  "outlineColor": "none",
+  "policy": "draw2d.policy.line.OrthogonalSelectionFeedbackPolicy",
+  "vertex": [{
+    "x": 235.734375,
+    "y": 1084.1953125
+  }, {
+    "x": 345.234375,
+    "y": 1084.1953125
+  }, {
+    "x": 345.234375,
+    "y": 1082.3984375
+  }, {
+    "x": 454.734375,
+    "y": 1082.3984375
+  }],
+  "radius": 3,
+  "routingMetaData": {
+    "routedByUserInteraction": false,
+    "fromDir": 1,
+    "toDir": 3
+  },
+  "source": {
+    "node": "9aa135c3-de74-af26-8bde-26a14c6cfd4a",
+    "port": "output_9aa135c3-de74-af26-8bde-26a14c6cfd4a"
+  },
+  "target": {
+    "node": "9a49821b-0fad-bd45-56bf-af4d32c6026a",
+    "port": "input_9a49821b-0fad-bd45-56bf-af4d32c6026a"
+  }
+}, {
+  "type": "draw2d.Connection",
+  "id": "f5698b8e-b9e9-fed5-4b08-c640c1ac8e85",
+  "alpha": 1,
+  "angle": 0,
+  "userData": {},
+  "cssClass": "draw2d_Connection",
+  "stroke": 2,
+  "color": "#00FF00",
+  "outlineStroke": 0,
+  "outlineColor": "none",
+  "policy": "draw2d.policy.line.OrthogonalSelectionFeedbackPolicy",
+  "vertex": [{
+    "x": 488.03125,
+    "y": 886.390625
+  }, {
+    "x": 488.03125,
+    "y": 967.6953125
+  }, {
+    "x": 541.765625,
+    "y": 967.6953125
+  }, {
+    "x": 541.765625,
+    "y": 1049
+  }],
+  "radius": 3,
+  "routingMetaData": {
+    "routedByUserInteraction": false,
+    "fromDir": 2,
+    "toDir": 0
+  },
+  "source": {
+    "node": "ae4fb094-54c0-6a5f-0310-115d37eab578",
+    "port": "hybrid1",
+    "decoration": "draw2d.decoration.connection.DiamondDecorator"
+  },
+  "target": {
+    "node": "9a49821b-0fad-bd45-56bf-af4d32c6026a",
+    "port": "hybrid0",
+    "decoration": "draw2d.decoration.connection.DiamondDecorator"
+  }
+}, {
+  "type": "draw2d.Connection",
+  "id": "da2844f8-018f-695e-08a8-a3a8daeba79d",
+  "alpha": 1,
+  "angle": 0,
+  "userData": {},
+  "cssClass": "draw2d_Connection",
+  "stroke": 2,
+  "color": "#000000",
+  "outlineStroke": 0,
+  "outlineColor": "none",
+  "policy": "draw2d.policy.line.OrthogonalSelectionFeedbackPolicy",
+  "vertex": [{
+    "x": 296.03125,
+    "y": 860.203125
+  }, {
+    "x": 403.734375,
+    "y": 860.1953125
+  }],
+  "radius": 3,
+  "routingMetaData": {
+    "routedByUserInteraction": false,
+    "fromDir": 1,
+    "toDir": 3
+  },
+  "source": {
+    "node": "3d1a2122-7350-69b7-0338-0e14222abb31",
+    "port": "output_3d1a2122-7350-69b7-0338-0e14222abb31",
+    "decoration": "draw2d.decoration.connection.ArrowDecorator"
+  },
+  "target": {
+    "node": "ae4fb094-54c0-6a5f-0310-115d37eab578",
+    "port": "input_ae4fb094-54c0-6a5f-0310-115d37eab578",
+    "decoration": "draw2d.decoration.connection.ArrowDecorator"
+  }
+}, {
+  "type": "draw2d.Connection",
+  "id": "5cb2a3e6-1f34-a03f-c334-16004592d309",
+  "alpha": 1,
+  "angle": 0,
+  "userData": {},
+  "cssClass": "draw2d_Connection",
+  "stroke": 2,
+  "color": "#304FFE",
+  "outlineStroke": 0,
+  "outlineColor": "none",
+  "policy": "draw2d.policy.line.OrthogonalSelectionFeedbackPolicy",
+  "vertex": [{
+    "x": 488.03125,
+    "y": 708.390625
+  }, {
+    "x": 488.03125,
+    "y": 834
+  }],
+  "radius": 3,
+  "routingMetaData": {
+    "routedByUserInteraction": false,
+    "fromDir": 2,
+    "toDir": 0
+  },
+  "source": {
+    "node": "0c7d2f11-7c89-2591-9148-ef92dabf791e",
+    "port": "hybrid1"
+  },
+  "target": {
+    "node": "ae4fb094-54c0-6a5f-0310-115d37eab578",
+    "port": "hybrid0"
+  }
+}, {
+  "type": "draw2d.Connection",
+  "id": "f7fc16c0-1430-39fb-ebc9-f13b6ca3c854",
+  "alpha": 1,
+  "angle": 0,
+  "userData": {},
+  "cssClass": "draw2d_Connection",
+  "stroke": 2,
+  "color": "#000000",
+  "outlineStroke": 0,
+  "outlineColor": "none",
+  "policy": "draw2d.policy.line.OrthogonalSelectionFeedbackPolicy",
+  "vertex": [{
+    "x": 290.1875,
+    "y": 682.1953125
+  }, {
+    "x": 434.734375,
+    "y": 682.1953125
+  }],
+  "radius": 3,
+  "routingMetaData": {
+    "routedByUserInteraction": false,
+    "fromDir": 1,
+    "toDir": 3
+  },
+  "source": {
+    "node": "9372d172-88ec-f4be-412e-baad7bf7ad30",
+    "port": "output_9372d172-88ec-f4be-412e-baad7bf7ad30",
+    "decoration": "draw2d.decoration.connection.ArrowDecorator"
+  },
+  "target": {
+    "node": "0c7d2f11-7c89-2591-9148-ef92dabf791e",
+    "port": "input_0c7d2f11-7c89-2591-9148-ef92dabf791e",
+    "decoration": "draw2d.decoration.connection.ArrowDecorator"
+  }
+}, {
+  "type": "draw2d.Connection",
+  "id": "2fe1c094-4989-4d27-a286-eb8a402fcccf",
+  "alpha": 1,
+  "angle": 0,
+  "userData": {},
+  "cssClass": "draw2d_Connection",
+  "stroke": 2,
+  "color": "#000000",
+  "outlineStroke": 0,
+  "outlineColor": "none",
+  "policy": "draw2d.policy.line.OrthogonalSelectionFeedbackPolicy",
+  "vertex": [{
+    "x": 354.1640625,
+    "y": 542.40625
+  }, {
+    "x": 354.1640625,
+    "y": 599.203125
+  }, {
+    "x": 488.03125,
+    "y": 599.203125
+  }, {
+    "x": 488.03125,
+    "y": 656
+  }],
+  "radius": 3,
+  "routingMetaData": {
+    "routedByUserInteraction": false,
+    "fromDir": 2,
+    "toDir": 0
+  },
+  "source": {
+    "node": "d8053c5f-a764-e102-9be8-6e53bf80eb78",
+    "port": "hybrid1",
+    "decoration": "draw2d.decoration.connection.DiamondDecorator"
+  },
+  "target": {
+    "node": "0c7d2f11-7c89-2591-9148-ef92dabf791e",
+    "port": "hybrid0",
+    "decoration": "draw2d.decoration.connection.DiamondDecorator"
+  }
+}, {
+  "type": "draw2d.Connection",
+  "id": "00c1c324-3c82-5217-a066-fe63a0c55b74",
+  "alpha": 1,
+  "angle": 0,
+  "userData": {},
+  "cssClass": "draw2d_Connection",
+  "stroke": 2,
+  "color": "#FF9100",
+  "outlineStroke": 0,
+  "outlineColor": "none",
+  "policy": "draw2d.policy.line.OrthogonalSelectionFeedbackPolicy",
+  "vertex": [{
+    "x": 541.328125,
+    "y": 682.1953125
+  }, {
+    "x": 607.1640625,
+    "y": 682.1953125
+  }, {
+    "x": 607.1640625,
+    "y": 542.390625
+  }],
+  "radius": 3,
+  "routingMetaData": {
+    "routedByUserInteraction": false,
+    "fromDir": 1,
+    "toDir": 2
+  },
+  "source": {
+    "node": "0c7d2f11-7c89-2591-9148-ef92dabf791e",
+    "port": "output_0c7d2f11-7c89-2591-9148-ef92dabf791e"
+  },
+  "target": {
+    "node": "9c22b74f-1aea-16c4-7dc6-be53396aa056",
+    "port": "hybrid1",
+    "decoration": "draw2d.decoration.connection.ArrowDecorator"
+  }
+}];
+// });
