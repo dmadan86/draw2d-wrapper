@@ -1,6 +1,6 @@
 {
   "name": "draw2d-wrapper",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Wrapper for draw2 lib, typescript definition",
   "main": "index.js",
   "scripts": {
