@@ -74,25 +74,25 @@ module.exports = function(_path) {
     // load plugins
     plugins: [
     //   new webpack.optimize.CommonsChunkPlugin('vendors', 'assets/js/vendors.[hash].js'),
-      new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
+    //   new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
       new TextPlugin('assets/css/[name].[chunkhash].css'),
       new webpack.ProvidePlugin({
         $: "jquery",
         jQuery: "jquery",
         "window.jQuery": "jquery"
       }),
-      new webpack.ProvidePlugin({
-        PF: "pathfinding",
-        "window.pathfinding": "pathfinding"
-      }),
-      new webpack.ProvidePlugin({
-        Raphael: "raphael",
-        "window.Raphael": "raphael"
-      }),
-      new webpack.ProvidePlugin({
-        Tweenable: "shifty",
-        "window.Tweenable": "shifty"
-      }),
+    //   new webpack.ProvidePlugin({
+    //     PF: "pathfinding",
+    //     "window.pathfinding": "pathfinding"
+    //   }),
+    //   new webpack.ProvidePlugin({
+    //     Raphael: "raphael",
+    //     "window.Raphael": "raphael"
+    //   }),
+    //   new webpack.ProvidePlugin({
+    //     Tweenable: "shifty",
+    //     "window.Tweenable": "shifty"
+    //   }),
       new Manifest(path.join(_path + '/config', 'manifest.json'), {
         rootAssetPath: rootAssetPath,
         ignorePaths: ['.DS_Store']

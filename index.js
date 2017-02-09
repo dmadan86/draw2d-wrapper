@@ -1,6 +1,7 @@
 window.$ = require('jquery');
 require('./draw2d/shifty');
-require('./draw2d/patched_raphael');
+// require('./draw2d/patched_raphael');
+window.Raphael = require('raphael');
 require('./draw2d/patched_Class');
 require('./draw2d/draw2d');
 require('./draw2d/plugins/shapes');
@@ -55,7 +56,7 @@ setTimeout(function() {
   var reader = new draw2d.io.json.Reader();
   canvas.zx_unmarshal(canvas, jsonDocument);
 }, 1000);
-  
+
 var jsonDocument = [{
   "type": "TableShape",
   "id": "3d1a2122-7350-69b7-0338-0e14222abb31",

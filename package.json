@@ -1,8 +1,8 @@
 {
   "name": "draw2d-wrapper",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Wrapper for draw2 lib, typescript definition",
-  "main": "index.js",
+  "main": "dist/draw2d-wrapper.js",
   "scripts": {
     "dev": "NODE_ENV=development webpack-dev-server  --progress --port 8090",
     "build": "rm -rf dist/* && NODE_ENV=production webpack -p --colors",
@@ -65,6 +65,8 @@
   "author": "Teranich <teran4work@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "babel-plugin-transform-builtin-extend": "^1.1.0"
+    "babel-plugin-transform-builtin-extend": "^1.1.0",
+    "jquery": "^3.1.1",
+    "raphael": "git+https://github.com/DmitryBaranovskiy/raphael.git"
   }
 }
