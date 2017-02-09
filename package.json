@@ -65,6 +65,6 @@
   "author": "Teranich <teran4work@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "babel-plugin-transform-builtin-extend": "^1.1.0",
+    "babel-plugin-transform-builtin-extend": "^1.1.0"
   }
 }
