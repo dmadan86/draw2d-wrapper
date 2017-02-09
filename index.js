@@ -57,6 +57,7 @@ setTimeout(function() {
   canvas.zx_unmarshal(canvas, jsonDocument);
 }, 1000);
 
+
 var jsonDocument = [{
   "type": "TableShape",
   "id": "3d1a2122-7350-69b7-0338-0e14222abb31",
