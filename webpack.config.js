@@ -8,7 +8,7 @@ module.exports = [{
   entry: './index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: "[name].js",
+    filename: "draw2d-wrapper.js",
     publicPath: '/'
   },
   devtool: 'source-map',
@@ -64,9 +64,9 @@ module.exports = [{
       include: /\.min\.js$/,
       minimize: true
     }),
-    // new HtmlPlugin({
-    //   // title: 'draw2d wrapper',
-    //   // template: path.join('examples', 'index.html')
-    // })
+    new HtmlPlugin({
+      title: 'draw2d wrapper',
+      template: 'index.html'
+    })
   ]
 }];

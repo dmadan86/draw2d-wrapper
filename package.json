@@ -1,6 +1,6 @@
 {
   "name": "draw2d-wrapper",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "Wrapper for draw2 lib",
   "main": "index.js",
   "scripts": {
