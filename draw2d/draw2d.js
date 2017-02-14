@@ -4,10 +4,8 @@
  * global namespace declarations
  *
  * @private
- *
  */
-(function() {
-var draw2d = 
+window.draw2d = 
 {
     geo: {
     },
@@ -23709,7 +23707,7 @@ draw2d.Figure = Class.extend({
 
 
          if(this.visible===true){
-             if(this.shape.isVisible && this.shape.isVisible()===false){
+             if(this.shape.isVisible()===false){
                  if($.isNumeric(attributes.visibleDuration)){
                      $(this.shape.node).fadeIn(attributes.visibleDuration, function(){
                          _this.shape.show();
@@ -53398,6 +53396,3 @@ Math.sign = function()
  if (this < 0) {return -1;}
  return 1;
 };
-this.draw2d = draw2d;
-return draw2d;
-})(window);

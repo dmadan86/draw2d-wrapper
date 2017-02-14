@@ -787,6 +787,7 @@
     R.fn = paperproto = Paper.prototype = R.prototype;
     R._id = 0;
     R._oid = 0;
+
     /*\
      * Raphael.is
      [ method ]
@@ -5840,8 +5841,134 @@
         }
         isLoaded();
     })(document, "DOMContentLoaded");
+  var Raphael = R;
+  Raphael.fn.createFilter = function(id) {
+    var paper = this;
+    var filter = new FRaphael.Filter(id);
+    paper.defs.appendChild(filter.element);
 
-    return R;
+    return filter;
+  };
+
+  /**
+   * Apply a filter to an element by id
+   */
+  Raphael.el.filter = function(filter) {
+    var id = (filter instanceof FRaphael.Filter) ? filter.id : filter;
+
+    this.node.setAttribute("filter", "url(#" + id + ")");
+    this.data("filterId", id);
+
+    return this;
+  };
+
+  /**
+   * Get the current filter for an element or a new one if not
+   */
+  Raphael.el.getFilter = function() {
+    return FRaphael.getFilter(this);
+  };
+
+  /**
+   * A shorthand method for applying blur
+   */
+  Raphael.el.blur = function(stdDeviation) {
+    if (stdDeviation == undefined) {
+      stdDeviation = 3;
+    }
+
+    this.getFilter().addBlur(stdDeviation);
+
+    return this;
+  };
+
+  /**
+   * A shorthand method for applying a drop shadow
+   */
+  Raphael.el.shadow = function(dx, dy, blur, opacity, color) {
+    if (dx == undefined) {
+      dx = 3;
+    }
+    if (dy == undefined) {
+      dy = 3;
+    }
+    if (blur == undefined) {
+      blur = 3;
+    }
+
+    this.getFilter().createShadow(dx, dy, blur, opacity, color);
+
+    return this;
+  };
+
+  /**
+   * A shorthand method for applying lighting
+   */
+  Raphael.el.light = function(x, y, z, color, type) {
+    if (x == undefined) {
+      x = this.paper.width;
+    }
+    if (y == undefined) {
+      y = 0;
+    }
+    if (z == undefined) {
+      z = 20;
+    }
+
+    this.getFilter().addLighting(x, y, z, color, type);
+
+    return this;
+  };
+
+  /**
+   * A shorthand method for applying a colour shift
+   */
+  Raphael.el.colorShift = function(color, shift) {
+    if (color == undefined) {
+      color = "black";
+    }
+    if (shift == undefined) {
+      shift = 0.5;
+    }
+
+    this.getFilter().addShiftToColor(color, shift);
+
+    return this;
+  };
+
+  /**
+   * A shorthand method for embossing
+   */
+  Raphael.el.emboss = function(height) {
+    this.getFilter().createEmboss(height);
+
+    return this;
+  };
+
+  /**
+   * A shorthand method for desaturating
+   */
+  Raphael.el.desaturate = function(saturation) {
+    this.getFilter().addDesaturate(saturation);
+
+    return this;
+  };
+
+  /**
+   * A shorthand method for complete desaturation
+   */
+  Raphael.el.greyScale = function() {
+    this.getFilter().addDesaturate(0);
+
+    return this;
+  };
+
+  /**
+   * add a filter to the paper by id
+   */
+
+  window.Raphael = R;
+  return R;
 }));
 
 // ┌─────────────────────────────────────────────────────────────────────┐ \\
@@ -8794,128 +8921,6 @@
     };
 
     scope.FRaphael = FR;
+
 })(window);
 
-/**
- * add a filter to the paper by id
- */
-Raphael.fn.createFilter = function(id) {
-    var paper = this;
-    var filter = new FRaphael.Filter(id);
-    paper.defs.appendChild(filter.element);
-
-    return filter;
-};
-
-/**
- * Apply a filter to an element by id
- */
-Raphael.el.filter = function(filter) {
-    var id = (filter instanceof FRaphael.Filter) ? filter.id : filter;
-
-    this.node.setAttribute("filter", "url(#" + id + ")");
-    this.data("filterId", id);
-
-    return this;
-};
-
-/**
- * Get the current filter for an element or a new one if not
- */
-Raphael.el.getFilter = function() {
-    return FRaphael.getFilter(this);
-};
-
-/**
- * A shorthand method for applying blur
- */
-Raphael.el.blur = function(stdDeviation) {
-    if (stdDeviation == undefined) {
-        stdDeviation = 3;
-    }
-
-    this.getFilter().addBlur(stdDeviation);
-
-    return this;
-};
-
-/**
- * A shorthand method for applying a drop shadow
- */
-Raphael.el.shadow = function(dx, dy, blur, opacity, color) {
-    if (dx == undefined) {
-        dx = 3;
-    }
-    if (dy == undefined) {
-        dy = 3;
-    }
-    if (blur == undefined) {
-        blur = 3;
-    }
-
-    this.getFilter().createShadow(dx, dy, blur, opacity, color);
-
-    return this;
-};
-
-/**
- * A shorthand method for applying lighting
- */
-Raphael.el.light = function(x, y, z, color, type) {
-    if (x == undefined) {
-        x = this.paper.width;
-    }
-    if (y == undefined) {
-        y = 0;
-    }
-    if (z == undefined) {
-        z = 20;
-    }
-
-    this.getFilter().addLighting(x, y, z, color, type);
-
-    return this;
-};
-
-/**
- * A shorthand method for applying a colour shift
- */
-Raphael.el.colorShift = function(color, shift) {
-    if (color == undefined) {
-        color = "black";
-    }
-    if (shift == undefined) {
-        shift = 0.5;
-    }
-
-    this.getFilter().addShiftToColor(color, shift);
-
-    return this;
-};
-
-/**
- * A shorthand method for embossing
- */
-Raphael.el.emboss = function(height) {
-    this.getFilter().createEmboss(height);
-
-    return this;
-};
-
-/**
- * A shorthand method for desaturating
- */
-Raphael.el.desaturate = function(saturation) {
-    this.getFilter().addDesaturate(saturation);
-
-    return this;
-};
-
-/**
- * A shorthand method for complete desaturation
- */
-Raphael.el.greyScale = function() {
-    this.getFilter().addDesaturate(0);
-
-    return this;
-};

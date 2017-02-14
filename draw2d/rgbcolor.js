@@ -285,4 +285,4 @@ function RGBColor(color_string)
     }
 
 }
-window.rgbcolor = RGBColor;
+
