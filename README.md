@@ -11,9 +11,14 @@ npm install -g draw2d-wrapper
 ```
 <script src="dist/draw2d-wrapper.js"  type="text/javascript"></script>
 ```
-or with webpack
+with webpack
 ```
 require('draw2d-wrapper');
 ```
-
+webpack, typescript
+```
+require('draw2d-wrapper');
+...
+let draw2d = (<any>window).draw2d;
+```
 
